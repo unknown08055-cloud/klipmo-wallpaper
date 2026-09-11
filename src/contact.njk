@@ -1,0 +1,39 @@
+---
+layout: layouts/base.njk
+title: "Contact"
+description: "Get in touch, including copyright / DMCA takedown requests."
+permalink: "/contact/"
+---
+<div class="container">
+  <article class="page-content">
+    <h1>Contact</h1>
+    <p>Use this form for general questions or to report a wallpaper you believe infringes your copyright.</p>
+
+    <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+      <input type="hidden" name="form-name" value="contact">
+      <p class="visually-hidden"><label>Don't fill this out: <input name="bot-field"></label></p>
+
+      <div class="form-field">
+        <label for="name">Name</label>
+        <input id="name" name="name" type="text" required>
+      </div>
+      <div class="form-field">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" required>
+      </div>
+      <div class="form-field">
+        <label for="reason">Reason</label>
+        <select id="reason" name="reason" style="width:100%; background:var(--surface); border:1px solid var(--border); color:var(--text); padding:11px 14px; border-radius:6px;">
+          <option>General question</option>
+          <option>Copyright / DMCA takedown request</option>
+          <option>Something else</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" required placeholder="If this is a takedown request, please include the wallpaper URL and a description of your rights to the content."></textarea>
+      </div>
+      <button class="btn btn-primary" type="submit">Send message</button>
+    </form>
+  </article>
+</div>

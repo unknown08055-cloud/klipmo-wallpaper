@@ -1,0 +1,12 @@
+{
+  "title": "Klipmo Wallpaper",
+  "tagline": "Wallpapers made for the screen you're holding.",
+  "description": "Premium, high-resolution wallpapers for phone and laptop screens, sized and cropped for the device you're using.",
+  "url": "https://klipmo-wallpaper.netlify.app",
+  "contact_email": "hello@klipmowallpaper.example",
+  "ads_enabled": true,
+  "adsense_client_id": "",
+  "adsense_slot_leaderboard": "",
+  "adsense_slot_in_feed": "",
+  "footer_note": "New wallpapers added regularly."
+}

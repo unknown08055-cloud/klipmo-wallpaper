@@ -1,0 +1,84 @@
+---
+layout: layouts/base.njk
+---
+{% from "partials/macros.njk" import wallpaperCard, adSlot %}
+{% set ogImage = image_thumb or video_poster %}
+{% set hasPhone = (video_phone if type == "live" else image_phone) %}
+{% set hasLaptop = (video_laptop if type == "live" else image_laptop) %}
+{% set defaultPane = "phone" if hasPhone else "laptop" %}
+
+<div class="container">
+  <div class="wp-hero">
+    <div>
+      <div class="wp-preview">
+        {% if hasPhone %}
+        <div class="wp-pane {% if defaultPane == 'phone' %}is-active{% endif %}" data-pane="phone">
+          {% if type == "live" %}
+            <video data-src="{{ video_phone }}" poster="{{ video_poster }}" muted loop playsinline preload="none"></video>
+          {% else %}
+            <img src="{{ image_phone or image_thumb }}" alt="{{ title }} — phone version" class="blur-up">
+          {% endif %}
+        </div>
+        {% endif %}
+        {% if hasLaptop %}
+        <div class="wp-pane {% if defaultPane == 'laptop' %}is-active{% endif %}" data-pane="laptop">
+          {% if type == "live" %}
+            <video data-src="{{ video_laptop }}" poster="{{ video_poster }}" muted loop playsinline preload="none"></video>
+          {% else %}
+            <img src="{{ image_laptop }}" alt="{{ title }} — laptop version" class="blur-up">
+          {% endif %}
+        </div>
+        {% endif %}
+      </div>
+      {% if hasPhone and hasLaptop %}
+      <div class="wp-preview-toggle" role="tablist" aria-label="Preview device">
+        <button type="button" class="{% if defaultPane == 'phone' %}is-active{% endif %}" data-preview-btn="phone" role="tab" aria-selected="{{ 'true' if defaultPane == 'phone' else 'false' }}">Phone</button>
+        <button type="button" class="{% if defaultPane == 'laptop' %}is-active{% endif %}" data-preview-btn="laptop" role="tab" aria-selected="{{ 'true' if defaultPane == 'laptop' else 'false' }}">Laptop</button>
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="wp-panel">
+      <span class="wp-cat-tag">{{ category | capitalize }}{% if type == "live" %} · Live{% endif %}</span>
+      <h1>{{ title }}</h1>
+      <p>{{ description }}</p>
+
+      <div class="wp-downloads">
+        {% if hasPhone %}
+        <a class="btn {% if defaultPane == 'phone' %}btn-primary{% else %}btn-outline{% endif %} btn-block" data-download="phone" href="{{ hasPhone }}" download>Download for phone <span class="wp-res">({{ phone_resolution }})</span></a>
+        {% endif %}
+        {% if hasLaptop %}
+        <a class="btn {% if defaultPane == 'laptop' %}btn-primary{% else %}btn-outline{% endif %} btn-block" data-download="laptop" href="{{ hasLaptop }}" download>Download for laptop <span class="wp-res">({{ laptop_resolution }})</span></a>
+        {% endif %}
+      </div>
+
+      {% if type == "live" %}
+      <div class="live-guide-note">
+        This is a live (video) wallpaper — a browser can't set it as your background directly.
+        <a href="/guide/live-wallpapers/">See the step-by-step guide</a> for your phone or computer.
+      </div>
+      {% endif %}
+
+      {% if tags_list.length %}
+      <div class="wp-tags">
+        {% for tag in tags_list %}<span>{{ tag }}</span>{% endfor %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  {{ adSlot("in_feed") }}
+
+  {% set related = collections.wallpapers | byCategory(category) %}
+  {% if related.length > 1 %}
+  <div class="section-head reveal">
+    <h2>More {{ category }}</h2>
+    <a href="/category/{{ category }}/">View category</a>
+  </div>
+  <div class="wall-grid">
+    {% for item in related | limit(5) %}
+      {% if item.data.slug != slug %}{{ wallpaperCard(item) }}{% endif %}
+    {% endfor %}
+  </div>
+  {% endif %}
+</div>

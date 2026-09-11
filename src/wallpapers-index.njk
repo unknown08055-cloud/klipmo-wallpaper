@@ -1,0 +1,38 @@
+---
+layout: layouts/base.njk
+title: "All wallpapers"
+description: "Every wallpaper on Klipmo, filterable by category and by static or live."
+permalink: "/wallpapers/"
+---
+{% from "partials/macros.njk" import wallpaperCard, adSlot %}
+
+<div class="container">
+  <div class="section-head reveal" style="margin-top:40px;">
+    <h2>All wallpapers</h2>
+  </div>
+
+  <div class="filters-bar">
+    <input type="search" placeholder="Search by name or tag…" aria-label="Search wallpapers" data-filter-search>
+    <select aria-label="Filter by category" data-filter-category>
+      <option value="all">All categories</option>
+      {% for cat in categoriesData.categories %}
+      <option value="{{ cat.slug }}">{{ cat.name }}</option>
+      {% endfor %}
+    </select>
+    <select aria-label="Filter by type" data-filter-type>
+      <option value="all">Static &amp; live</option>
+      <option value="static">Static only</option>
+      <option value="live">Live only</option>
+    </select>
+  </div>
+
+  {{ adSlot("in_feed") }}
+
+  <div class="wall-grid" data-filter-grid>
+    {% for item in collections.wallpapers %}
+      {{ wallpaperCard(item) }}
+    {% endfor %}
+  </div>
+
+  <p class="empty-state" data-empty-state hidden>No wallpapers match those filters yet — try a different search or category.</p>
+</div>

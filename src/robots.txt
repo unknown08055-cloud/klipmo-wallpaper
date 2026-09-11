@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+
+Sitemap: https://klipmo-wallpaper.netlify.app/sitemap.xml

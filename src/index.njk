@@ -1,0 +1,58 @@
+---
+layout: layouts/base.njk
+title: null
+---
+{% from "partials/macros.njk" import wallpaperCard, adSlot %}
+{% set heroA = collections.featuredWallpapers[0] if collections.featuredWallpapers.length > 0 else (collections.wallpapers[0] if collections.wallpapers.length > 0 else null) %}
+{% set heroB = collections.featuredWallpapers[1] if collections.featuredWallpapers.length > 1 else (collections.wallpapers[1] if collections.wallpapers.length > 1 else null) %}
+
+<section class="hero container">
+  <div>
+    <h1>Wallpapers made for the screen you're holding.</h1>
+    <p class="lede">Every wallpaper here comes cropped and sized for phone and laptop separately — what you download is what fits, not a stretched afterthought.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="/wallpapers/">Browse wallpapers</a>
+      <a class="btn btn-outline" href="/guide/live-wallpapers/">See live wallpapers</a>
+    </div>
+  </div>
+  {% if heroA %}
+  <div class="device-stack" aria-hidden="true">
+    <div class="frame-laptop"><img src="{{ heroA.data.image_laptop or heroA.data.video_poster }}" alt="" loading="lazy"></div>
+    {% if heroB %}<div class="frame-phone"><img src="{{ heroB.data.image_phone or heroB.data.video_poster }}" alt="" loading="lazy"></div>{% endif %}
+  </div>
+  {% endif %}
+</section>
+
+<div class="container">
+  <div class="chip-rail">
+    <a class="chip" href="/wallpapers/">All</a>
+    {% for cat in categoriesData.categories %}
+    <a class="chip" href="/category/{{ cat.slug }}/">{{ cat.name }}</a>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="container">
+  {{ adSlot("leaderboard") }}
+</div>
+
+<div class="container">
+  <div class="section-head reveal">
+    <h2>Featured</h2>
+  </div>
+  <div class="wall-grid">
+    {% for item in collections.featuredWallpapers | limit(6) %}
+      {{ wallpaperCard(item) }}
+    {% endfor %}
+  </div>
+
+  <div class="section-head reveal">
+    <h2>Recently added</h2>
+    <a href="/wallpapers/">Browse all</a>
+  </div>
+  <div class="wall-grid">
+    {% for item in collections.wallpapers | limit(8) %}
+      {{ wallpaperCard(item) }}
+    {% endfor %}
+  </div>
+</div>

@@ -1,0 +1,39 @@
+{
+  "categories": [
+    {
+      "slug": "nature",
+      "name": "Nature",
+      "description": "Organic textures, greens and open air."
+    },
+    {
+      "slug": "abstract",
+      "name": "Abstract",
+      "description": "Colour, gradients and shapes with no fixed subject."
+    },
+    {
+      "slug": "minimal",
+      "name": "Minimal",
+      "description": "Quiet compositions with room to breathe."
+    },
+    {
+      "slug": "space",
+      "name": "Space",
+      "description": "Deep sky, stars and things far away."
+    },
+    {
+      "slug": "dark",
+      "name": "Dark",
+      "description": "Low-light wallpapers built for OLED screens."
+    },
+    {
+      "slug": "neon",
+      "name": "Neon",
+      "description": "Glow, grids and after-dark colour."
+    },
+    {
+      "slug": "anime",
+      "name": "Anime",
+      "description": "Soft, painterly skies and colour in an anime-inspired style."
+    }
+  ]
+}

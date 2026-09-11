@@ -1,0 +1,108 @@
+backend:
+  name: git-gateway
+  branch: main
+
+# Where uploaded media files (images, videos) are stored in the repo,
+# and the public URL path they're served from.
+media_folder: "src/images/uploads"
+public_folder: "/images/uploads"
+
+publish_mode: simple
+
+collections:
+  - name: "wallpapers"
+    label: "Wallpapers"
+    label_singular: "Wallpaper"
+    folder: "src/wallpapers"
+    create: true
+    slug: "{{slug}}"
+    identifier_field: title
+    summary: "{{title}} — {{category}} ({{type}})"
+    sortable_fields: ["date", "title", "category"]
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Slug", name: "slug", widget: "string", hint: "Lowercase, hyphenated, must be unique, e.g. blue-ridge. Should match the filename Decap creates for this entry." }
+      - label: "Type"
+        name: "type"
+        widget: "select"
+        default: "static"
+        options:
+          - { label: "Static image", value: "static" }
+          - { label: "Live (video loop)", value: "live" }
+      - { label: "Category", name: "category", widget: "string", hint: "Type the exact slug of a category from Site Settings -> Categories (e.g. nature, anime). Add new categories there first." }
+      - { label: "Tags", name: "tags_list", widget: "list", required: false, hint: "Short keywords, used by site search." }
+      - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: "Featured on homepage", name: "featured", widget: "boolean", default: false }
+      - { label: "Description", name: "description", widget: "text", required: false }
+      - { label: "Thumbnail image (grid preview)", name: "image_thumb", widget: "image", required: false, media_library: { config: { multiple: false } }, hint: "Static wallpapers only. A tall preview crop, roughly 700px wide, works best." }
+      - { label: "Phone image", name: "image_phone", widget: "image", required: false, hint: "Static wallpapers only. Recommended 1080 x 1920." }
+      - { label: "Laptop image", name: "image_laptop", widget: "image", required: false, hint: "Static wallpapers only. Recommended 1920 x 1080." }
+      - { label: "Live: poster image", name: "video_poster", widget: "image", required: false, hint: "Live wallpapers only. Still image shown before the video plays." }
+      - { label: "Live: phone video", name: "video_phone", widget: "file", required: false, hint: "Live wallpapers only. MP4, portrait orientation, keep it small (a few seconds looping is enough)." }
+      - { label: "Live: laptop video", name: "video_laptop", widget: "file", required: false, hint: "Live wallpapers only. MP4, landscape orientation." }
+      - { label: "Phone size label", name: "phone_resolution", widget: "string", default: "1080 x 1920" }
+      - { label: "Laptop size label", name: "laptop_resolution", widget: "string", default: "1920 x 1080" }
+      - { label: "Layout — do not change", name: "layout", widget: "hidden", default: "layouts/wallpaper.njk" }
+
+  - name: "settings"
+    label: "Site settings"
+    editor: { preview: false }
+    files:
+      - name: "general"
+        label: "General site settings"
+        file: "src/_data/site.json"
+        fields:
+          - { label: "Site title", name: "title", widget: "string" }
+          - { label: "Tagline", name: "tagline", widget: "string" }
+          - { label: "Description (for search engines)", name: "description", widget: "text" }
+          - { label: "Site URL", name: "url", widget: "string", hint: "Your live Netlify URL or custom domain, no trailing slash, e.g. https://klipmo.netlify.app" }
+          - { label: "Contact email", name: "contact_email", widget: "string" }
+          - { label: "Footer note", name: "footer_note", widget: "string", required: false }
+          - { label: "Ads enabled", name: "ads_enabled", widget: "boolean", default: true, hint: "Turn off to hide every ad slot instantly, site-wide." }
+          - { label: "AdSense publisher ID", name: "adsense_client_id", widget: "string", required: false, hint: "Looks like ca-pub-1234567890123456. Leave blank until AdSense approves your site." }
+          - { label: "AdSense slot ID — leaderboard (homepage)", name: "adsense_slot_leaderboard", widget: "string", required: false }
+          - { label: "AdSense slot ID — in-feed (listing pages)", name: "adsense_slot_in_feed", widget: "string", required: false }
+
+      - name: "categories"
+        label: "Categories"
+        file: "src/_data/categoriesData.json"
+        fields:
+          - label: "Categories"
+            name: "categories"
+            widget: "list"
+            hint: "Add, remove, re-order, or rename categories here. The slug is what wallpapers must match in their Category field."
+            fields:
+              - { label: "Slug", name: "slug", widget: "string", hint: "Lowercase, no spaces, e.g. anime" }
+              - { label: "Display name", name: "name", widget: "string" }
+              - { label: "Short description", name: "description", widget: "string" }
+
+  - name: "pages"
+    label: "Pages"
+    files:
+      - name: "about"
+        label: "About page"
+        file: "src/about.md"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Description", name: "description", widget: "string" }
+          - { label: "Layout — do not change", name: "layout", widget: "hidden", default: "layouts/page.njk" }
+          - { label: "Permalink — do not change", name: "permalink", widget: "hidden", default: "/about/" }
+          - { label: "Body", name: "body", widget: "markdown" }
+      - name: "privacy"
+        label: "Privacy policy"
+        file: "src/privacy.md"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Description", name: "description", widget: "string" }
+          - { label: "Layout — do not change", name: "layout", widget: "hidden", default: "layouts/page.njk" }
+          - { label: "Permalink — do not change", name: "permalink", widget: "hidden", default: "/privacy/" }
+          - { label: "Body", name: "body", widget: "markdown" }
+      - name: "terms"
+        label: "Terms of use"
+        file: "src/terms.md"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Description", name: "description", widget: "string" }
+          - { label: "Layout — do not change", name: "layout", widget: "hidden", default: "layouts/page.njk" }
+          - { label: "Permalink — do not change", name: "permalink", widget: "hidden", default: "/terms/" }
+          - { label: "Body", name: "body", widget: "markdown" }

@@ -1,0 +1,68 @@
+[build]
+  command = "npm run build"
+  publish = "_site"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# ---------------------------------------------------------------------------
+# Security headers
+# This is a static site with no server code and no database, which already
+# removes most attack surface (no SQL injection, no server RCE, no exposed
+# upload endpoint). These headers close off the remaining common browser-side
+# risks: clickjacking, MIME-sniffing, and unexpected third-party script/frame
+# injection via a locked-down Content-Security-Policy.
+# ---------------------------------------------------------------------------
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=()"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+    Content-Security-Policy = """
+      default-src 'self';
+      base-uri 'self';
+      form-action 'self' https://app.netlify.com;
+      frame-ancestors 'none';
+      script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://www.googletagservices.com https://adservice.google.com https://googleads.g.doubleclick.net;
+      frame-src https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://www.google.com;
+      img-src 'self' data: https://*.googlesyndication.com https://*.gstatic.com https://*.doubleclick.net;
+      connect-src 'self' https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net;
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+      font-src 'self' https://fonts.gstatic.com;
+      object-src 'none';
+    """
+
+# The admin panel needs a more permissive policy to load Decap CMS (from
+# unpkg) and talk to Netlify Identity / Git Gateway. It's still restricted to
+# the specific hosts those services use, and access itself is gated by your
+# Netlify Identity login, not by this header.
+[[headers]]
+  for = "/admin/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Content-Security-Policy = """
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://identity.netlify.com;
+      connect-src 'self' https://api.netlify.com https://*.netlify.com https://identity.netlify.com https://unpkg.com;
+      img-src 'self' data: https:;
+      style-src 'self' 'unsafe-inline' https://unpkg.com;
+      font-src 'self' data:;
+      frame-src https://api.netlify.com https://*.netlify.com;
+      object-src 'none';
+    """
+
+[[headers]]
+  for = "/images/uploads/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

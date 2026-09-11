@@ -1,0 +1,33 @@
+---
+layout: layouts/base.njk
+pagination:
+  data: categoriesData.categories
+  size: 1
+  alias: cat
+permalink: "/category/{{ cat.slug }}/"
+eleventyComputed:
+  title: "{{ cat.name }}"
+  description: "{{ cat.description }}"
+---
+{% from "partials/macros.njk" import wallpaperCard, adSlot %}
+
+<div class="container">
+  <div class="section-head reveal" style="margin-top:40px;">
+    <h2>{{ cat.name }}</h2>
+  </div>
+  <p style="margin-bottom:26px;">{{ cat.description }}</p>
+
+  {% set inCategory = collections.wallpapers | byCategory(cat.slug) %}
+
+  {% if inCategory.length %}
+  <div class="wall-grid">
+    {% for item in inCategory %}
+      {{ wallpaperCard(item) }}
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="empty-state">No wallpapers in this category yet — add one from the admin panel.</p>
+  {% endif %}
+
+  {{ adSlot("in_feed") }}
+</div>

@@ -1,0 +1,38 @@
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col" style="max-width:280px;">
+        <h3>Klipmo Wallpaper</h3>
+        <p style="font-size:.88rem;">{{ site.tagline }}</p>
+      </div>
+      <div class="footer-col">
+        <h3>Categories</h3>
+        <ul>
+          {% for cat in categoriesData.categories %}
+          <li><a href="/category/{{ cat.slug }}/">{{ cat.name }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Site</h3>
+        <ul>
+          <li><a href="/wallpapers/">Browse all</a></li>
+          <li><a href="/guide/live-wallpapers/">Live wallpaper guide</a></li>
+          <li><a href="/about/">About</a></li>
+          <li><a href="/contact/">Contact / DMCA</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Legal</h3>
+        <ul>
+          <li><a href="/privacy/">Privacy policy</a></li>
+          <li><a href="/terms/">Terms of use</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© {% year %} Klipmo Wallpaper. {{ site.footer_note }}</span>
+      <a href="/admin/">Site admin</a>
+    </div>
+  </div>
+</footer>
